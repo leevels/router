@@ -18,12 +18,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Router\Facade;
+namespace Leevel\Router\Proxy;
 
 use Leevel\Di\Container;
 
 /**
- * 门面 view.
+ * 代理 router.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
@@ -31,7 +31,7 @@ use Leevel\Di\Container;
  *
  * @version 1.0
  */
-class View
+class Router
 {
     /**
      * call.
@@ -44,7 +44,7 @@ class View
     public static function __callStatic(string $method, array $args)
     {
         return Container::singletons()
-            ->make('view')
+            ->make('router')
             ->{$method}(...$args);
     }
 }

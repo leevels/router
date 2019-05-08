@@ -18,12 +18,12 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Router\Facade;
+namespace Leevel\Router\Proxy;
 
 use Leevel\Di\Container;
 
 /**
- * 门面 url.
+ * 代理 url.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
