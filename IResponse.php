@@ -18,42 +18,25 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Router\Proxy;
+namespace Leevel\Router;
 
-use Leevel\Di\Container;
 use Leevel\Http\ApiResponse;
 use Leevel\Http\FileResponse;
 use Leevel\Http\JsonResponse;
 use Leevel\Http\RedirectResponse;
 use Leevel\Http\Response as BaseResponse;
-use Leevel\Router\IResponse as IBaseResponse;
-use Leevel\Router\Response as RouterResponse;
 
 /**
- * 代理 response.
+ * 响应接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.06.10
+ * @since 2018.03.07
  *
  * @version 1.0
- * @codeCoverageIgnore
  */
-class Response implements IResponse
+interface IResponse
 {
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        return self::proxy()->{$method}(...$args);
-    }
-
     /**
      * 返回一个响应.
      *
@@ -63,10 +46,7 @@ class Response implements IResponse
      *
      * @return \Leevel\Http\Response
      */
-    public static function make($content = '', $status = 200, array $headers = []): BaseResponse
-    {
-        return self::proxy()->make($content, $status, $headers);
-    }
+    public function make($content = '', $status = 200, array $headers = []): BaseResponse;
 
     /**
      * 返回视图响应.
@@ -79,10 +59,7 @@ class Response implements IResponse
      *
      * @return \Leevel\Http\Response
      */
-    public static function view(string $file, array $vars = [], ?string $ext = null, int $status = 200, array $headers = []): BaseResponse
-    {
-        return self::proxy()->view($file, $vars, $ext, $status, $headers);
-    }
+    public function view(string $file, array $vars = [], ?string $ext = null, int $status = 200, array $headers = []): BaseResponse;
 
     /**
      * 返回视图成功消息.
@@ -95,10 +72,7 @@ class Response implements IResponse
      *
      * @return \Leevel\Http\Response
      */
-    public static function viewSuccess(string $message, string $url = '', int $time = 1, int $status = 200, array $headers = []): BaseResponse
-    {
-        return self::proxy()->viewSuccess($message, $url, $time, $status, $headers);
-    }
+    public function viewSuccess(string $message, string $url = '', int $time = 1, int $status = 200, array $headers = []): BaseResponse;
 
     /**
      * 返回视图失败消息.
@@ -111,10 +85,7 @@ class Response implements IResponse
      *
      * @return \Leevel\Http\Response
      */
-    public static function viewFail(string $message, string $url = '', int $time = 3, int $status = 404, array $headers = []): BaseResponse
-    {
-        return self::proxy()->viewFail($message, $url, $time, $status, $headers);
-    }
+    public function viewFail(string $message, string $url = '', int $time = 3, int $status = 404, array $headers = []): BaseResponse;
 
     /**
      * 返回 JSON 响应.
@@ -126,10 +97,7 @@ class Response implements IResponse
      *
      * @return \Leevel\Http\JsonResponse
      */
-    public static function json($data = null, int $status = 200, array $headers = [], bool $json = false): JsonResponse
-    {
-        return self::proxy()->json($data, $status, $headers, $json);
-    }
+    public function json($data = null, int $status = 200, array $headers = [], bool $json = false): JsonResponse;
 
     /**
      * 返回 JSONP 响应.
@@ -142,10 +110,7 @@ class Response implements IResponse
      *
      * @return \Leevel\Http\JsonResponse
      */
-    public static function jsonp(string $callback, $data = null, int $status = 200, array $headers = [], bool $json = false): JsonResponse
-    {
-        return self::proxy()->jsonp($callback, $data, $status, $headers, $json);
-    }
+    public function jsonp(string $callback, $data = null, int $status = 200, array $headers = [], bool $json = false): JsonResponse;
 
     /**
      * 返回下载响应.
@@ -159,10 +124,7 @@ class Response implements IResponse
      *
      * @return \Leevel\Http\FileResponse
      */
-    public static function download($file, ?string $name = null, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true): FileResponse
-    {
-        return self::proxy()->download($file, $name, $status, $headers, $autoEtag, $autoLastModified);
-    }
+    public function download($file, ?string $name = null, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true): FileResponse;
 
     /**
      * 返回文件响应.
@@ -175,10 +137,7 @@ class Response implements IResponse
      *
      * @return \Leevel\Http\FileResponse
      */
-    public static function file($file, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true): FileResponse
-    {
-        return self::proxy()->file($file, $status, $headers, $autoEtag, $autoLastModified);
-    }
+    public function file($file, int $status = 200, array $headers = [], bool $autoEtag = false, bool $autoLastModified = true): FileResponse;
 
     /**
      * 返回一个 URL 生成跳转响应.
@@ -192,10 +151,7 @@ class Response implements IResponse
      *
      * @return \Leevel\Http\RedirectResponse
      */
-    public static function redirect(string $url, array $params = [], string $subdomain = 'www', $suffix = null, int $status = 302, array $headers = []): RedirectResponse
-    {
-        return self::proxy()->redirect($url, $params, $subdomain, $suffix, $status, $headers);
-    }
+    public function redirect(string $url, array $params = [], string $subdomain = 'www', $suffix = null, int $status = 302, array $headers = []): RedirectResponse;
 
     /**
      * 返回一个跳转响应.
@@ -206,10 +162,7 @@ class Response implements IResponse
      *
      * @return \Leevel\Http\RedirectResponse
      */
-    public static function redirectRaw(string $url, int $status = 302, array $headers = []): RedirectResponse
-    {
-        return self::proxy()->redirectRaw($url, $status, $headers);
-    }
+    public function redirectRaw(string $url, int $status = 302, array $headers = []): RedirectResponse;
 
     /**
      * 请求成功
@@ -220,10 +173,7 @@ class Response implements IResponse
      *
      * @return \Leevel\Http\ApiResponse
      */
-    public static function apiOk($content = '', ?string $text = null): ApiResponse
-    {
-        return self::proxy()->apiOk($content, $text);
-    }
+    public function apiOk($content = '', ?string $text = null): ApiResponse;
 
     /**
      * 已创建
@@ -234,10 +184,7 @@ class Response implements IResponse
      *
      * @return \Leevel\Http\ApiResponse
      */
-    public static function apiCreated(?string $location = '', $content = ''): ApiResponse
-    {
-        return self::proxy()->apiCreated($location, $content);
-    }
+    public function apiCreated(?string $location = '', $content = ''): ApiResponse;
 
     /**
      * 已接受
@@ -248,10 +195,7 @@ class Response implements IResponse
      *
      * @return \Leevel\Http\ApiResponse
      */
-    public static function apiAccepted(?string $location = null, $content = ''): ApiResponse
-    {
-        return self::proxy()->apiAccepted($location, $content);
-    }
+    public function apiAccepted(?string $location = null, $content = ''): ApiResponse;
 
     /**
      * 无内容
@@ -259,10 +203,7 @@ class Response implements IResponse
      *
      * @return \Leevel\Http\ApiResponse
      */
-    public static function apiNoContent(): ApiResponse
-    {
-        return self::proxy()->apiNoContent();
-    }
+    public function apiNoContent(): ApiResponse;
 
     /**
      * 错误请求
@@ -274,10 +215,7 @@ class Response implements IResponse
      *
      * @return \Leevel\Http\ApiResponse
      */
-    public static function apiError(string $message, int $statusCode, ?string $text = null): ApiResponse
-    {
-        return self::proxy()->apiError($message, $statusCode, $text);
-    }
+    public function apiError(string $message, int $statusCode, ?string $text = null): ApiResponse;
 
     /**
      * 错误请求
@@ -288,10 +226,7 @@ class Response implements IResponse
      *
      * @return \Leevel\Http\ApiResponse
      */
-    public static function apiBadRequest(?string $message = null, ?string $text = null): ApiResponse
-    {
-        return self::proxy()->apiBadRequest($message, $text);
-    }
+    public function apiBadRequest(?string $message = null, ?string $text = null): ApiResponse;
 
     /**
      * 未授权
@@ -302,10 +237,7 @@ class Response implements IResponse
      *
      * @return \Leevel\Http\ApiResponse
      */
-    public static function apiUnauthorized(?string $message = null, ?string $text = null): ApiResponse
-    {
-        return self::proxy()->apiUnauthorized($message, $text);
-    }
+    public function apiUnauthorized(?string $message = null, ?string $text = null): ApiResponse;
 
     /**
      * 禁止
@@ -316,10 +248,7 @@ class Response implements IResponse
      *
      * @return \Leevel\Http\ApiResponse
      */
-    public static function apiForbidden(?string $message = null, ?string $text = null): ApiResponse
-    {
-        return self::proxy()->apiForbidden($message, $text);
-    }
+    public function apiForbidden(?string $message = null, ?string $text = null): ApiResponse;
 
     /**
      * 未找到
@@ -330,10 +259,7 @@ class Response implements IResponse
      *
      * @return \Leevel\Http\ApiResponse
      */
-    public static function apiNotFound(?string $message = null, ?string $text = null): ApiResponse
-    {
-        return self::proxy()->apiNotFound($message, $text);
-    }
+    public function apiNotFound(?string $message = null, ?string $text = null): ApiResponse;
 
     /**
      * 方法禁用
@@ -344,10 +270,7 @@ class Response implements IResponse
      *
      * @return \Leevel\Http\ApiResponse
      */
-    public static function apiMethodNotAllowed(?string $message = null, ?string $text = null): ApiResponse
-    {
-        return self::proxy()->apiMethodNotAllowed($message, $text);
-    }
+    public function apiMethodNotAllowed(?string $message = null, ?string $text = null): ApiResponse;
 
     /**
      * 无法处理的实体
@@ -359,10 +282,7 @@ class Response implements IResponse
      *
      * @return \Leevel\Http\ApiResponse
      */
-    public static function apiUnprocessableEntity(?array $errors = null, ?string $message = null, ?string $text = null): ApiResponse
-    {
-        return self::proxy()->apiUnprocessableEntity($errors, $message, $text);
-    }
+    public function apiUnprocessableEntity(?array $errors = null, ?string $message = null, ?string $text = null): ApiResponse;
 
     /**
      * 太多请求
@@ -373,10 +293,7 @@ class Response implements IResponse
      *
      * @return \Leevel\Http\ApiResponse
      */
-    public static function apiTooManyRequests(?string $message = null, ?string $text = null): ApiResponse
-    {
-        return self::proxy()->apiTooManyRequests($message, $text);
-    }
+    public function apiTooManyRequests(?string $message = null, ?string $text = null): ApiResponse;
 
     /**
      * 服务器内部错误
@@ -387,42 +304,23 @@ class Response implements IResponse
      *
      * @return \Leevel\Http\ApiResponse
      */
-    public static function apiInternalServerError(?string $message = null, ?string $text = null): ApiResponse
-    {
-        return self::proxy()->apiInternalServerError($message, $text);
-    }
+    public function apiInternalServerError(?string $message = null, ?string $text = null): ApiResponse;
 
     /**
      * 设置视图正确模板
      *
      * @param string $template
      *
-     * @return \Leevel\Router\Response
+     * @return \Leevel\Router\IResponse
      */
-    public static function setViewSuccessTemplate(string $template): IBaseResponse
-    {
-        return self::proxy()->setViewSuccessTemplate($template);
-    }
+    public function setViewSuccessTemplate(string $template): self;
 
     /**
      * 设置视图错误模板
      *
      * @param string $template
      *
-     * @return \Leevel\Router\Response
+     * @return \Leevel\Router\IResponse
      */
-    public static function setViewFailTemplate(string $template): IBaseResponse
-    {
-        return self::proxy()->setViewFailTemplate($template);
-    }
-
-    /**
-     * 代理服务
-     *
-     * @return \Leevel\Router\Response
-     */
-    public static function proxy(): RouterResponse
-    {
-        return Container::singletons()->make('response');
-    }
+    public function setViewFailTemplate(string $template): self;
 }

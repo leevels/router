@@ -18,20 +18,21 @@ declare(strict_types=1);
  * file that was distributed with this source code.
  */
 
-namespace Leevel\Router;
+namespace Leevel\Router\Proxy;
 
+use Leevel\Router\IView as IBaseView;
 use Leevel\View\IView as IViews;
 
 /**
- * IView 接口.
+ * 代理 view 接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.04.23
+ * @since 2019.05.25
  *
  * @version 1.0
  *
- * @see \Leevel\Router\Proxy\IView 请保持接口设计的一致性
+ * @see \Leevel\Router\IView 请保持接口设计的一致性
  */
 interface IView
 {
@@ -42,7 +43,7 @@ interface IView
      *
      * @return \Leevel\Router\IView
      */
-    public function switchView(IViews $view): self;
+    public static function switchView(IViews $view): IBaseView;
 
     /**
      * 变量赋值.
@@ -52,7 +53,7 @@ interface IView
      *
      * @return \Leevel\Router\IView
      */
-    public function setVar($name, $value = null): self;
+    public static function setVar($name, $value = null): IBaseView;
 
     /**
      * 获取变量赋值.
@@ -61,7 +62,7 @@ interface IView
      *
      * @return mixed
      */
-    public function getVar(?string $name = null);
+    public static function getVar(?string $name = null);
 
     /**
      * 删除变量值.
@@ -70,14 +71,14 @@ interface IView
      *
      * @return \Leevel\Router\IView
      */
-    public function deleteVar(array $name): self;
+    public static function deleteVar(array $name): IBaseView;
 
     /**
      * 清空变量值.
      *
      * @return \Leevel\Router\IView
      */
-    public function clearVar(): self;
+    public static function clearVar(): IBaseView;
 
     /**
      * 加载视图文件.
@@ -88,5 +89,5 @@ interface IView
      *
      * @return string
      */
-    public function display(string $file, array $vars = [], ?string $ext = null): string;
+    public static function display(string $file, array $vars = [], ?string $ext = null): string;
 }

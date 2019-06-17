@@ -20,36 +20,22 @@ declare(strict_types=1);
 
 namespace Leevel\Router\Proxy;
 
-use Leevel\Di\Container;
 use Leevel\Http\IRequest;
 use Leevel\Router\IUrl as IBaseUrl;
-use Leevel\Router\Url as BaseUrl;
 
 /**
- * 代理 url.
+ * 代理 url 接口.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2018.02.08
+ * @since 2019.05.24
  *
  * @version 1.0
- * @codeCoverageIgnore
+ *
+ * @see \Leevel\Router\IUrl 请保持接口设计的一致性
  */
-class Url implements IUrl
+interface IUrl
 {
-    /**
-     * call.
-     *
-     * @param string $method
-     * @param array  $args
-     *
-     * @return mixed
-     */
-    public static function __callStatic(string $method, array $args)
-    {
-        return self::proxy()->{$method}(...$args);
-    }
-
     /**
      * 生成路由地址
      *
@@ -60,20 +46,14 @@ class Url implements IUrl
      *
      * @return string
      */
-    public static function make(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string
-    {
-        return self::proxy()->make($url, $params, $subdomain, $suffix);
-    }
+    public static function make(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string;
 
     /**
      * 返回 HTTP 请求
      *
      * @return \Leevel\Http\IRequest
      */
-    public static function getRequest(): IRequest
-    {
-        return self::proxy()->getRequest();
-    }
+    public static function getRequest(): IRequest;
 
     /**
      * 设置配置.
@@ -83,28 +63,12 @@ class Url implements IUrl
      *
      * @return \Leevel\Router\IUrl
      */
-    public static function setOption(string $name, $value): IBaseUrl
-    {
-        return self::proxy()->setOption($name, $value);
-    }
+    public static function setOption(string $name, $value): IBaseUrl;
 
     /**
      * 获取域名.
      *
      * @return string
      */
-    public static function getDomain(): string
-    {
-        return self::proxy()->getDomain();
-    }
-
-    /**
-     * 代理服务
-     *
-     * @return \Leevel\Router\Url
-     */
-    public static function proxy(): BaseUrl
-    {
-        return Container::singletons()->make('url');
-    }
+    public static function getDomain(): string;
 }
