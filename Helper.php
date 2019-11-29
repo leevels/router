@@ -20,52 +20,38 @@ declare(strict_types=1);
 
 namespace Leevel\Router;
 
-use Leevel\Http\IRequest;
+use function Leevel\Support\Str\un_camelize;
+use Leevel\Support\Str\un_camelize;
 
 /**
- * IUrl 生成.
+ * 助手类.
  *
  * @author Xiangmin Liu <635750556@qq.com>
  *
- * @since 2017.01.10
+ * @since 2019.08.21
  *
  * @version 1.0
  */
-interface IUrl
+class Helper
 {
     /**
-     * 生成路由地址
+     * call.
      *
-     * @param string           $url
-     * @param array            $params
-     * @param string           $subdomain
-     * @param null|bool|string $suffix
+     * @param string $method
+     * @param array  $args
      *
-     * @return string
+     * @return mixed
      */
-    public function make(string $url, array $params = [], string $subdomain = 'www', $suffix = null): string;
+    public static function __callStatic(string $method, array $args)
+    {
+        $fn = __NAMESPACE__.'\\Helper\\'.un_camelize($method);
+        if (!function_exists($fn)) {
+            class_exists($fn);
+        }
 
-    /**
-     * 返回 HTTP 请求
-     *
-     * @return \Leevel\Http\IRequest
-     */
-    public function getRequest(): IRequest;
-
-    /**
-     * 设置配置.
-     *
-     * @param string $name
-     * @param mixed  $value
-     *
-     * @return \Leevel\Router\IUrl
-     */
-    public function setOption(string $name, $value): self;
-
-    /**
-     * 获取域名.
-     *
-     * @return string
-     */
-    public function getDomain(): string;
+        return $fn(...$args);
+    }
 }
+
+// import fn.
+class_exists(un_camelize::class);
